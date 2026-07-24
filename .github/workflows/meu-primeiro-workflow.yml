@@ -7,7 +7,7 @@ on:
 
 jobs: 
   giropops:
-    runs-om: ubunto-latest
+    runs-on: ubunto-latest
     steps:
       - name: Confere version do ubunto
         run: cat /etc/os-release
