@@ -9,7 +9,7 @@ jobs:
   giropops:
     runs-on: ubunto-latest
     steps:
-      - name: Confere version do ubunto
+      - name: Confere versao do ubunto
         run: cat /etc/os-release
 
       - name: Exibir uma mensagem
