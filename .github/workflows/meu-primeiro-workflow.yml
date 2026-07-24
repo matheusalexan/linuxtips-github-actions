@@ -9,7 +9,7 @@ jobs:
   giropops:
     runs-on: ubunto-latest
     steps:
-      - name: Confere versao do ubunto
+      - name: Confere versao do ubuntuS
         run: cat /etc/os-release
 
       - name: Exibir uma mensagem
