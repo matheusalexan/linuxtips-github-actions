@@ -18,9 +18,6 @@ jobs:
   job_2:
     runs-on: ubunto-latest
     steps:
-      - name: Qualquer outra coisa
-        run: ls -lha
-
       - name: Le conteudo do arquivo
         run: cat mensagem.txt
 
