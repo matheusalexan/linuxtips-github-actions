@@ -13,11 +13,11 @@ jobs:
         run: cat /etc/os-release
 
       - name: Exibir uma mensagem
-        run: echo "Estou fazendo o curso do Github Actions de Linuxtips" > ${{github.wordspace}}/mensagem.txt
+        run: echo "Estou fazendo o curso do Github Actions de Linuxtips" > ${{github.workspace}}/mensagem.txt
 
       - uses: actions/upload-artifact@v4 with
-        name: strigus
-        path: ${{github.wordspace}}/mensagem.txt
+        name: strigus-upload
+        path: ${{github.workspace}}/mensagem.txt
 
 job_2:
   runs-on: ubuntu-
@@ -28,16 +28,14 @@ job_2:
 
       uses: actions/download-artifact@v4
       with:
-        name: strigus
-        path: mensagem.txt
+        name: strigus-upload
+        path: strigus
 
     - name: Ver o conteudo do diretorio
       run: ls -lha && ls ./strigus/
 
     - name: Acessar arquivo mensagem
-      run: |
-        mv strigus/mensagem.txt .
-        rm -rf ./strigus
+      run: mv strigus/mensagem.txt . && rm -rf ./strigus
 
     - name: Ver o conteudo do diretorio
       run: ls -lha
