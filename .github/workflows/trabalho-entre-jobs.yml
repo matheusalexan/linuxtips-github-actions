@@ -1,5 +1,4 @@
-name: Vendo arquivos compartilhados entre steps
-
+name: Vendo arquivos compartilhados entre steps.
 on:
   Workflow_dispatch
 
