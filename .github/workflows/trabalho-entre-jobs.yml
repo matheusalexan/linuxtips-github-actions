@@ -18,10 +18,10 @@ jobs:
           name: strigus-upload
           path: ${{github.workspace}}/mensagem.txt
 
-job_2:
-  runs-on: ubuntu-latest
-  needs: job_1
-  steps:
+  job_2:
+   runs-on: ubuntu-latest
+   needs: job_1
+   steps:
     - name: Ver o conteudo do diretorio
       run: ls -lha
 
