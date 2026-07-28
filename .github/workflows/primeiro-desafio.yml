@@ -1,0 +1,37 @@
+neme: Primeiro desafio day 1 
+
+on:
+  workflow_dispatch:
+    inputs:
+      docker_image:
+        description: "Nome da imagem Docker. Exemplo: alpine:latest"
+        required: true
+        default: "alpine:latest"
+        type: string
+
+jobs:
+  verificar-imagem:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Mostrar imagem recebida
+        run: 'echo "Imagem escolhida: ${{ inputs.docker_image }}"'
+
+      - name: Baixar imagem Docker
+        run: docker pull "${{ inputs.docker_image }}"
+
+      - name: Verificar se a imagem foi baixada
+        run: docker image inspect "${{ inputs.docker_image }}"
+
+      - name: Listar imagens disponíveis
+        run: docker image ls
+
+      - name: Analisar vulnerabilidades com Docker Scout
+        uses: docker/scout-action@v1
+        with:
+          command: cves
+          image: local://${{ inputs.docker_image }}
+          only-severities: critical,high
+          summary: true
+
+    
