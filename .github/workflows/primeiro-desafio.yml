@@ -1,37 +1,41 @@
-neme: Primeiro desafio day 1 
+name: Validacao de Imagens de Container
 
 on:
   workflow_dispatch:
     inputs:
-      docker_image:
-        description: "Nome da imagem Docker. Exemplo: alpine:latest"
-        required: true
-        default: "alpine:latest"
+      validaImagemDocker:
+        description: 'Validação da imagem escolhida pelo usuário'
+        required: false
+        default: 'nginx:latest'
         type: string
 
 jobs:
-  verificar-imagem:
+  pipeline-seguranca:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Mostrar imagem recebida
-        run: 'echo "Imagem escolhida: ${{ inputs.docker_image }}"'
 
-      - name: Baixar imagem Docker
-        run: docker pull "${{ inputs.docker_image }}"
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Verificar se a imagem foi baixada
-        run: docker image inspect "${{ inputs.docker_image }}"
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Listar imagens disponíveis
-        run: docker image ls
+      - name: Baixa a imagem do container
+        run: |
+          docker pull ${{ github.event.inputs.validaImagemDocker }}
 
-      - name: Analisar vulnerabilidades com Docker Scout
+      - name: Leitura da imagem
+        run: |
+          IMAGE_NAME=$(echo "${{ github.event.inputs.validaImagemDocker }}" | cut -d ':' -f 1)
+          docker images | grep $IMAGE_NAME
+
+      - name: Scan com o Docker Scout
         uses: docker/scout-action@v1
         with:
-          command: cves
-          image: local://${{ inputs.docker_image }}
+          command: quickview,cves,recommendations,sbom
+          image: ${{ github.event.inputs.validaImagemDocker }}
           only-severities: critical,high
-          summary: true
-
-    
